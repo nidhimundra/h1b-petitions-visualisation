@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/javascript.fullPage.css"/>
+    <link rel="stylesheet" type="text/css" href="https://dc-js.github.io/dc.js/css/dc.css"/>
+    <script src="https://dc-js.github.io/dc.js/js/d3.js"></script>
+    <script src="http://d3js.org/queue.v1.min.js"></script>
+    <script src="https://dc-js.github.io/dc.js/js/crossfilter.js"></script>
+    <script src="https://dc-js.github.io/dc.js/js/dc.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
+    <script src="http://colorbrewer2.org/export/colorbrewer.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/javascript.fullPage.css"/>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
+    <link rel="stylesheet" type="text/css" href="../static/skill.css"/>
+
+
+    <!--<link rel="stylesheet" type="text/css" src="main.css"/>-->
+    <script src="../static/utils.js"></script>
+    <script src="../static/stateLabels.js"></script>
+    <script src="../static/statesJson.js"></script>
+    <script src="../static/stateIDs.js"></script>
+    <script src="../static/geo_spatial.js"></script>
+    <script src="../static/pie_chart.js"></script>
+    <script src="../static/row_chart.js"></script>
+    <script src="../static/select_option.js"></script>
+    <script src="../static/scatterplot.js"></script>
+    <script src="../static/data_table.js"></script>
+    <script src="../static/bubble_chart.js"></script>
+    <script src="../static/main.js"></script>
+
+    <style>
+        select.dc-select-menu {
+            width: 250px;
+        }
+
+        .dc-chart g.row text {
+            fill: black;
+        }
+
+        .data-table-container {
+            padding: 30px;
+        }
+
+        .dc-chart .dc-legend {
+            font-size: 10px;
+        }
+
+        b, strong {
+            font-weight: 700;
+            margin-right: 18px;
+            margin-left: 18px;
+        }
+
+        .dc-data-count {
+            float: right;
+            margin-top: 15px;
+            margin-right: 15px;
+        }
+
+        .dc-data-count .filter-count {
+            color: #3182bd;
+            font-weight: bold;
+        }
+
+        .dc-data-count .total-count {
+            color: #3182bd;
+            font-weight: bold;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>H1B Visa Petitions</title>
+
+</head>
+
+<body>
+<div id="fullpage">
+    <div class="section" id="section0">
+        <div class="content">
+            <div class="container">
+                <a href="javascript:dc.filterAll(); dc.renderAll();" style="float: right; padding: 2px">Reset All</a>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <br>
+                            <h1>What is the trend of H1B Petitions across US?</h1>
+                        </div>
+                        <div class="row">
+                            <div class="dc-data-count" style="float: left;">
+                                <h4>
+                                    Out of
+                                    <span class="total-count"></span>
+                                    ,
+                                    <span class="filter-count"></span>
+                                    petitions were filed across selected states in 2014
+                                </h4>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row" style="float: left;margin-left: -30px">
+                            <div class="col-sm-6">
+                                <h5>Select Case Status</h5>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" id="geo-spatial-total" name="geoSpatialRadioButton"
+                                               data-toggle="button" onclick="handleGeoSpatialButtonClick(this)">
+                                        Total
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" id="geo-spatial-withdrawn" name="geoSpatialRadioButton"
+                                               data-toggle="button" onclick="handleGeoSpatialButtonClick(this)">
+                                        Withdrawn
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" id="geo-spatial-certified" name="geoSpatialRadioButton"
+                                               data-toggle="button" onclick="handleGeoSpatialButtonClick(this)">
+                                        Certified
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" id="geo-spatial-denied" name="geoSpatialRadioButton"
+                                               data-toggle="button" onclick="handleGeoSpatialButtonClick(this)">
+                                        Denied
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="pie-chart-1" style="float: left;margin-left: -60px; margin-top: -15px;"></div>
+                                <label for="pie-chart-1" id="pie-chart-1-title"></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-9">
+                        <div style="text-align: center;">
+                            <label for="geo-spatial" id="geo-spatial-title"
+                                   style="margin-top: 8px;margin-left: 100px;font-size: 13px;margin-bottom: -50px;"></label>
+                        </div>
+                        <div id="geo-spatial"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="scatter-plot-1" style="float: left; margin-left: -50px;margin-top: -50px;"></div>
+                        <div style="text-align: center;">
+                            <label for="scatter-plot-1" id="scatter-plot-1-title"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="section1">
+        <div class="content">
+            <div class="container">
+                <div style="text-align: center;">
+                    <h2>Which Company Would Increase Your Chances of Getting H1B?</h2>
+                </div>
+                <a href="javascript:dc.filterAll(); dc.renderAll();" style="float: right; margin-top: -35px">Reset
+                    All</a>
+                <br><br>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div id="select-option-2"></div>
+                                <label for="select-option-2" id="select-option-2-title"></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="btn-group" data-toggle="buttons-radio">
+                                    <input type="radio" id="full_time" name="positionType" data-toggle="button"
+                                           onclick="filterPositionType(this)">
+                                    <label for="full_time">Full Time</label>
+                                    &nbsp;&nbsp;
+                                    <input type="radio" id="non_full_time" name="positionType" data-toggle="button"
+                                           onclick="filterPositionType(this)">
+                                    <label for="non_full_time">Non Full Time</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="row">
+                            &nbsp;&nbsp;
+                            <label for="price-range">Select Salary Range</label>
+                            &nbsp;&nbsp;
+                            <b>0</b>
+                            <input id="price-range" type="text" class="span2" value="" data-slider-min="0"
+                                   data-slider-max="330000000" data-slider-step="5" data-slider-value="[0, 330000000]"/>
+                            <b>330 Million</b>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div id="bubble-chart" style="float: left;margin-left: -50px"></div>
+                                <div style="text-align: center;">
+                                    <label for="bubble-chart" id="bubble-chart-title"
+                                           style="margin-top: -12px;font-size: 12px"></label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div id="pie-chart-3" style="float: left;margin-left: 15px;margin-top: 15px"></div>
+                                    <label for="pie-chart-3" id="pie-chart-3-title"></label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div id="pie-chart-2" style="float: left;margin-left: 0px;margin-top: 15px"></div>
+                                    <label for="pie-chart-2" id="pie-chart-2-title"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row data-table-container">
+                            <div class="panel-body" style="margin-left: -50px; margin-top: -30px">
+                                <table id="data-table" class="table table-hover table-striped table-bordered">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div style="text-align: center; margin-top: -20px">
+                            <label for="row-chart" id="row-chart-title" style="font-size: 12px"></label>
+                        </div>
+                        <div id="row-chart" style="float: left;margin-left: -50px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="section2">
+        <div class="content">
+            <div class="container">
+                <div style="text-align: center;">
+                    <h2>H1B Petitions Trend Across Different Job Positions</h2>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div style="text-align: center;">
+                            <label>Hierachy of Job Positions</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="text-align: center;">
+                            <label>Plot Showing Distribution of Case Status</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="skills">
+                    <div id="skillmap">
+                        <div class="skills-wrapper">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="skills-sunburst" id="skills-sunburst"></div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="skills-chart" id="skills-chart">
+                                        <div id="skills-chart-breadcrumb"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript" src="../static/javascript.fullPage.js"></script>
+<script type="text/javascript">
+    fullpage.initialize('#fullpage', {
+        anchors: ['firstPage', 'secondPage', 'thirdPage']
+    });
+</script>
+
+<script type="text/javascript" src="../static/skillsdata.js"></script>
+<script type="text/javascript" src="../static/skill.js"></script>
+<script type="text/javascript">
+    // Hack to make this example display correctly in an iframe on bl.ocks.org
+    d3.select(self.frameElement).style("height", "700px");
+</script>
